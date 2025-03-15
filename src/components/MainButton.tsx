@@ -11,10 +11,10 @@ type Props = {
 function MainButton({ variant, title, iconName, className, onClick }: Props) {
   const baseStyles = "px-4 py-2 rounded-lg flex items-center gap-1 cursor-pointer transition-all";
   const variantStyles = {
-    filled: "text-white bg-purple-500 hover:bg-purple-700",
-    outlined: "border border-purple-300 hover:border-purple-700",
-    text: "text-purple-500 hover:text-purple-700 p-0!",
-    rounded: "text-white bg-purple-500 hover:bg-purple-700 px-13 rounded-full!",
+    filled: "text-white bg-main-100 hover:bg-main",
+    outlined: "border border-main-100 hover:border-main",
+    text: "text-main-100 hover:text-main p-0!",
+    rounded: "text-white bg-main-100 hover:bg-main px-13 rounded-full!",
   };
 
   return (
