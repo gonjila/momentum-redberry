@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import FilterTypeBtn from "./FilterTypeBtn";
 import MainButton from "./MainButton";
+import FilterContentItem from "./FilterContentItem";
 
 function TasksFilter() {
   const [chosenFilter, setChosenFilter] = useState<1 | 2 | 3 | null>(null);
@@ -44,18 +45,32 @@ function TasksFilter() {
         />
       </div>
 
-      {chosenFilter && (
-        <div
-          onBlur={() => setChosenFilter(null)}
-          className="border-main absolute top-[120%] flex w-full flex-col gap-6 rounded-xl border bg-white px-8 pt-10 pb-5"
-        >
-          {chosenFilter}
-
-          <div className="flex justify-end">
-            <MainButton variant="rounded" title="არჩევა" onClick={() => {}} />
-          </div>
+      <div
+        onBlur={() => setChosenFilter(null)}
+        className={`border-main absolute top-[120%] flex w-full flex-col gap-6 overflow-hidden rounded-xl bg-white transition-all ${chosenFilter ? "border px-8 pt-10 pb-5 opacity-100" : "h-0 p-0 opacity-0"}`}
+      >
+        <div className="flex flex-col gap-5">
+          <FilterContentItem
+            title="ელაია ბაგრატიონი"
+            isSelected={true}
+            onSelect={() => console.log("first")}
+          />
+          <FilterContentItem
+            title="გიორგი კეკელიძე"
+            isSelected={false}
+            onSelect={() => console.log("second")}
+          />
+          <FilterContentItem
+            title="მარიამ მაჭავარიანი"
+            isSelected={true}
+            onSelect={() => console.log("third")}
+          />
         </div>
-      )}
+
+        <div className="flex justify-end">
+          <MainButton variant="rounded" title="არჩევა" onClick={() => {}} />
+        </div>
+      </div>
     </div>
   );
 }

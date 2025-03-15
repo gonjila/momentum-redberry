@@ -1,7 +1,8 @@
 import Add from "./Add";
 import BottomAngle from "./BottomAngle";
+import Check from "./Check";
 
-export type IconNameType = "add" | "bottom-angle";
+export type IconNameType = "add" | "bottom-angle" | "check";
 
 interface IconProps {
   iconName: IconNameType;
@@ -19,6 +20,9 @@ const Icon = ({ iconName, width, height, color }: IconProps) => {
       break;
     case "bottom-angle":
       IconComponet = BottomAngle;
+      break;
+    case "check":
+      IconComponet = Check;
       break;
     default: {
       return null;
