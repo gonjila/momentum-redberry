@@ -3,15 +3,13 @@
 import { useEffect, useState } from "react";
 
 import { DepartmentType, EmployeeType, PriorityType } from "@/types";
-import { FilterDataKeysType, useFiltersStore } from "@/store";
+import { FilterDataKeysType, PosiblyActivatedFilterItem, useFiltersStore } from "@/store";
 
 import FilterContentItem from "./FilterContentItem";
 import MainButton from "./MainButton";
 
-type DataType = (DepartmentType | PriorityType | EmployeeType) & { active?: boolean };
-
 interface IProps {
-  data: DataType[];
+  data: PosiblyActivatedFilterItem[];
   chosenFilterType: FilterDataKeysType;
   onClose: () => void;
 }
@@ -19,7 +17,7 @@ interface IProps {
 function FilterContent({ data, chosenFilterType, onClose }: IProps) {
   const { changeData } = useFiltersStore();
 
-  const [chosenFilterData, setChosenFilterData] = useState<DataType[]>([]);
+  const [chosenFilterData, setChosenFilterData] = useState<PosiblyActivatedFilterItem[]>([]);
 
   useEffect(() => {
     setChosenFilterData(data);
@@ -34,7 +32,9 @@ function FilterContent({ data, chosenFilterType, onClose }: IProps) {
   };
 
   const saveChanges = () => {
-    const filteredChosendFilters = chosenFilterData.filter(chosenFil => chosenFil.active);
+    const filteredChosendFilters = chosenFilterData
+      .filter(chosenFil => chosenFil.active)
+      .map(chosenFil => ({ ...chosenFil, chosenFilterType }));
 
     changeData(chosenFilterData, chosenFilterType, filteredChosendFilters);
   };

@@ -69,11 +69,13 @@ function TasksFilter() {
 
       {modifiedSelectedFilters.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">
-          {modifiedSelectedFilters.map(item => (
+          {modifiedSelectedFilters?.map(item => (
             <FilterResultItem
               key={item.id + item.name}
               title={item.name}
-              onClear={deleteSelectedFilter}
+              onClear={() =>
+                item.chosenFilterType && deleteSelectedFilter(item.id, item.chosenFilterType)
+              }
             />
           ))}
 

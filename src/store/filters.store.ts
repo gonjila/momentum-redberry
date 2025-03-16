@@ -9,7 +9,17 @@ type FilterDataType = {
   employees: EmployeeType[];
 };
 
+export type SelectableFilterDataType = {
+  departments: PosiblyActivatedFilterItem[];
+  priorities: PosiblyActivatedFilterItem[];
+  employees: PosiblyActivatedFilterItem[];
+};
+
 export type FilterDataKeysType = keyof FilterDataType;
+export type PosiblyActivatedFilterItem = (DepartmentType | PriorityType | EmployeeType) & {
+  active?: boolean;
+  chosenFilterType?: FilterDataKeysType;
+};
 
 const initialValue: FilterDataType = {
   departments: [],
@@ -19,14 +29,14 @@ const initialValue: FilterDataType = {
 
 interface IFiltersStore {
   fetchedFiltersData: FilterDataType;
-  selectedFilters: FilterDataType;
+  selectedFilters: SelectableFilterDataType;
   fetchFilterData: () => void;
   changeData: (
-    changedValues: Partial<FilterDataType>,
+    changedValues: PosiblyActivatedFilterItem[],
     chosenFilterType: FilterDataKeysType,
     filterdSelectedValues: DepartmentType[] | PriorityType[] | EmployeeType[],
   ) => void;
-  deleteSelectedFilter: () => void;
+  deleteSelectedFilter: (itemId: number, chosenFilterType: FilterDataKeysType) => void;
   resetFilterData: () => void;
 }
 
@@ -52,7 +62,19 @@ const useFiltersStore = create<IFiltersStore>((set, get) => ({
     }),
 
   // TODO finish
-  deleteSelectedFilter: () => {},
+  deleteSelectedFilter: (itemId, chosenFilterType) =>
+    set(state => ({
+      selectedFilters: {
+        ...state.selectedFilters,
+        [chosenFilterType]: state.selectedFilters[chosenFilterType].filter(item => item.id !== itemId),
+      },
+      fetchedFiltersData: {
+        ...state.fetchedFiltersData,
+        [chosenFilterType]: state.fetchedFiltersData[chosenFilterType].map(item =>
+          item.id === itemId ? { ...item, active: false } : item,
+        ),
+      },
+    })),
 
   resetFilterData: () => {
     get().fetchFilterData();
