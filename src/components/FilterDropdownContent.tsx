@@ -1,54 +1,69 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { DepartmentType, EmployeeType, PriorityType } from "@/types";
-import { useFiltersStore } from "@/store";
+import { FilterDataKeysType, useFiltersStore } from "@/store";
 
 import FilterContentItem from "./FilterContentItem";
 import MainButton from "./MainButton";
-import { type ChosenFilterType } from "./TasksFilter";
 
-type IProps = {
-  data: DepartmentType[] | PriorityType[] | EmployeeType[];
-  chosenFilterType: ChosenFilterType;
+type DataType = (DepartmentType | PriorityType | EmployeeType) & { active?: boolean };
+
+interface IProps {
+  data: DataType[];
+  chosenFilterType: FilterDataKeysType;
   onClose: () => void;
-};
+}
 
 function FilterContent({ data, chosenFilterType, onClose }: IProps) {
-  const { chooseFilter } = useFiltersStore();
+  const { changeData } = useFiltersStore();
+
+  const [chosenFilterData, setChosenFilterData] = useState<DataType[]>([]);
+
+  useEffect(() => {
+    setChosenFilterData(data);
+  }, [data]);
+
+  const updateChosenFilterData = (item: DepartmentType | PriorityType | EmployeeType) => {
+    setChosenFilterData(prev =>
+      prev.map(stateItem =>
+        stateItem.id === item.id ? { ...stateItem, active: !stateItem.active } : stateItem,
+      ),
+    );
+  };
+
+  const saveChanges = () => {
+    const filteredChosendFilters = chosenFilterData.filter(chosenFil => chosenFil.active);
+
+    changeData(chosenFilterData, chosenFilterType, filteredChosendFilters);
+  };
 
   return (
-    <div
-      className={`border-main absolute top-[120%] flex w-full flex-col gap-6 rounded-xl border bg-white px-8 pt-10 pb-5 ${chosenFilterType === 3 && "py-5!"}`}
-    >
+    <div className="border-main absolute top-[120%] flex w-full flex-col gap-6 rounded-xl border bg-white px-8 pt-10 pb-5">
       {data.length > 0 ? (
         <>
           <div className="flex flex-col gap-5">
-            {chosenFilterType !== 3 &&
-              data?.map(department => (
-                <FilterContentItem
-                  key={department.id}
-                  title={department.name}
-                  isSelected={true}
-                  onSelect={() => chooseFilter([])}
-                />
-              ))}
-
-            {chosenFilterType === 3 &&
-              (data as EmployeeType[])?.map(employee => (
-                <FilterContentItem
-                  key={employee.id}
-                  title={`${employee.name} ${employee.surname}`}
-                  imageSrc={employee.avatar}
-                  isSelected={true}
-                  onSelect={() => chooseFilter([])}
-                />
-              ))}
+            {chosenFilterData.map(item => (
+              <FilterContentItem
+                key={item.id}
+                title={
+                  chosenFilterType === "employees"
+                    ? `${item.name} ${(item as EmployeeType).surname}`
+                    : item.name
+                }
+                imageSrc={chosenFilterType === "employees" ? (item as EmployeeType).avatar : undefined}
+                isSelected={item?.active || false}
+                onSelect={() => updateChosenFilterData(item)}
+              />
+            ))}
           </div>
           <div className="flex justify-end">
             <MainButton
               variant="rounded"
               title="არჩევა"
               onClick={() => {
+                saveChanges();
                 onClose();
               }}
             />

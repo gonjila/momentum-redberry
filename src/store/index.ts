@@ -1,1 +1,1 @@
-export { default as useFiltersStore } from "./filters.store";
+export { default as useFiltersStore, type FilterDataKeysType } from "./filters.store";
