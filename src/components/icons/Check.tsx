@@ -4,7 +4,7 @@ type IProps = {
   color?: string;
 };
 
-function Add({ width, height, color }: IProps) {
+function Check({ width, height, color }: IProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -18,4 +18,4 @@ function Add({ width, height, color }: IProps) {
   );
 }
 
-export default Add;
+export default Check;

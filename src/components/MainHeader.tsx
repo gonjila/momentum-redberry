@@ -10,7 +10,7 @@ function MainHeader() {
   const router = useRouter();
 
   return (
-    <header className="flex items-center justify-between py-7">
+    <header className="mb-10 flex items-center justify-between py-7">
       <Link href={"/"}>
         <Image src={"/momentum-logo.png"} alt="logo" width={210} height={38} />
       </Link>

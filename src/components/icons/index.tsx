@@ -1,9 +1,19 @@
 import Add from "./Add";
 import BottomAngle from "./BottomAngle";
+import Calendar from "./Calendar";
 import Check from "./Check";
 import Close from "./Close";
+import Person from "./Person";
+import PieChart from "./PieChart";
 
-export type IconNameType = "add" | "bottom-angle" | "check" | "close";
+export type IconNameType =
+  | "add"
+  | "bottom-angle"
+  | "calendar"
+  | "check"
+  | "close"
+  | "person"
+  | "pie-chart";
 
 interface IconProps {
   iconName: IconNameType;
@@ -22,11 +32,20 @@ const Icon = ({ iconName, width, height, color }: IconProps) => {
     case "bottom-angle":
       IconComponet = BottomAngle;
       break;
+    case "calendar":
+      IconComponet = Calendar;
+      break;
     case "check":
       IconComponet = Check;
       break;
     case "close":
       IconComponet = Close;
+      break;
+    case "person":
+      IconComponet = Person;
+      break;
+    case "pie-chart":
+      IconComponet = PieChart;
       break;
     default: {
       return null;

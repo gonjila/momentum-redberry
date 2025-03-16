@@ -4,7 +4,7 @@ type IProps = {
   color?: string;
 };
 
-function Add({ width, height, color }: IProps) {
+function BottomAngle({ width, height, color }: IProps) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -18,4 +18,4 @@ function Add({ width, height, color }: IProps) {
   );
 }
 
-export default Add;
+export default BottomAngle;
