@@ -7,7 +7,7 @@ export const getAllEmployees = async () => {
     return res;
   } catch (err) {
     // TODO toast error
-    console.error(err);
+    console.error("get all employee service error", (err as Error).message);
   }
 };
 
@@ -18,6 +18,6 @@ export const createNewEmpolyee = async (data: object) => {
     return res;
   } catch (err) {
     // TODO toast error
-    console.error(err);
+    console.error("create new employee service error", (err as Error).message);
   }
 };

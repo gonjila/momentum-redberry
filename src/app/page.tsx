@@ -1,16 +1,16 @@
 import { TasksFilter, TasksList } from "@/components";
-import { getAllStatuses } from "@/services";
+import { getAllDepartments, getAllEmployees, getAllPriorities } from "@/services";
 
 export default async function Home() {
-  const statuses = await getAllStatuses();
-
-  console.log({ statuses });
+  const departments = await getAllDepartments();
+  const priorities = await getAllPriorities();
+  const employees = await getAllEmployees();
 
   return (
     <main className="flex flex-col">
       <h1 className="text-[36px] font-semibold">დავალებების გვერდი</h1>
 
-      <TasksFilter />
+      <TasksFilter departments={departments} priorities={priorities} employees={employees} />
 
       <TasksList />
     </main>

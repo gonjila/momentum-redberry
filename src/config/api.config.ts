@@ -23,6 +23,7 @@ const apiConfig = async ({
       headers: {
         "Content-Type": "application/json",
         Accept: "aplication/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
         ...headers,
       },
     };
@@ -38,16 +39,14 @@ const apiConfig = async ({
 
     if (!res.ok) {
       const errorResponse = await res.json();
-      throw new Error(errorResponse?.message || errorResponse || "An error occurred");
+      throw new Error(
+        errorResponse?.message || errorResponse || "An error occurred while fetching data.",
+      );
     }
 
     return await res.json();
   } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(err.message || String(err));
-    } else {
-      throw new Error(String(err));
-    }
+    throw err;
   }
 };
 
