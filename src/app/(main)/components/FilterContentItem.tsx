@@ -1,7 +1,7 @@
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 
-import Icon from "./icons";
+import { Icon } from "@/components";
 
 type IProps = {
   title: string;

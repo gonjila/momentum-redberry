@@ -3,11 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 
 import { FilterDataKeysType, useFiltersStore } from "@/store";
+import { MainButton } from "@/components";
 
 import FilterTypeBtn from "./FilterTypeBtn";
 import FilterResultItem from "./FilterResultItem";
 import FilterDropdownContent from "./FilterDropdownContent";
-import MainButton from "./MainButton";
 
 function TasksFilter() {
   const dropdownRef = useRef<HTMLDivElement>(null);

@@ -1,4 +1,4 @@
-import Icon from "./icons";
+import { Icon } from "@/components";
 
 type IProps = {
   title: string;

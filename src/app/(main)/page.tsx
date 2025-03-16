@@ -1,4 +1,4 @@
-import { TasksFilter, TasksList } from "@/components";
+import { TasksList, TasksFilter } from "./components";
 
 export default async function Home() {
   return (

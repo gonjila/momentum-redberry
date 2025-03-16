@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 
 import { DepartmentType, EmployeeType, PriorityType } from "@/types";
 import { FilterDataKeysType, PosiblyActivatedFilterItem, useFiltersStore } from "@/store";
+import { MainButton } from "@/components";
 
 import FilterContentItem from "./FilterContentItem";
-import MainButton from "./MainButton";
 
 interface IProps {
   data: PosiblyActivatedFilterItem[];

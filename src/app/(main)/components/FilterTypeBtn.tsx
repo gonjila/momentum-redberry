@@ -1,6 +1,6 @@
 "use client";
 
-import Icon from "./icons";
+import { Icon } from "@/components";
 
 interface IProps {
   title: string;
