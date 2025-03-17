@@ -12,4 +12,5 @@ export interface TaskType {
   employee: EmployeeType;
   status: StatusType;
   priority: PriorityType;
+  total_comments?: number;
 }

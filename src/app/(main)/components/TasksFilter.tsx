@@ -67,7 +67,7 @@ function TasksFilter() {
         )}
       </div>
 
-      {modifiedSelectedFilters.length > 0 && (
+      {modifiedSelectedFilters.length > 0 ? (
         <div className="flex flex-wrap items-center gap-2">
           {modifiedSelectedFilters?.map(item => (
             <FilterResultItem
@@ -81,6 +81,8 @@ function TasksFilter() {
 
           <MainButton variant="text" title="გასუფთავება" onClick={resetFilterData} />
         </div>
+      ) : (
+        <div />
       )}
     </div>
   );
