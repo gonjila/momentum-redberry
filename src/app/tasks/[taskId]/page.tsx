@@ -37,7 +37,7 @@ async function TaskPage({ params }: IProps) {
         <Details {...rest} />
       </section>
 
-      <CommentsSection taskId={940} />
+      <CommentsSection taskId={taskId} />
     </main>
   );
 }

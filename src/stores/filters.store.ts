@@ -61,7 +61,6 @@ const useFiltersStore = create<IFiltersStore>((set, get) => ({
       };
     }),
 
-  // TODO finish
   deleteSelectedFilter: (itemId, chosenFilterType) =>
     set(state => ({
       selectedFilters: {

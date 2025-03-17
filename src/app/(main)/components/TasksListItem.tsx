@@ -45,8 +45,8 @@ function TasksListItem({
       <div className="flex items-center justify-between">
         <Image src={employee.avatar} alt={employee.name} width={32} height={32} />
 
-        <div className="flex items-center">
-          <Icon iconName="calendar" />
+        <div className="flex items-center gap-1">
+          <Icon iconName="comment" />
           <span>{total_comments}</span>
         </div>
       </div>

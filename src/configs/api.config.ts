@@ -7,6 +7,7 @@ interface IParams {
   body?: object;
   revalidate?: NextFetchRequestConfig["revalidate"];
   tags?: NextFetchRequestConfig["tags"];
+  cache?: RequestCache;
 }
 
 const apiConfig = async ({
@@ -16,6 +17,7 @@ const apiConfig = async ({
   headers,
   revalidate = 3600,
   tags = [],
+  cache,
 }: IParams) => {
   try {
     const fetchOptions: RequestInit = {
@@ -34,6 +36,7 @@ const apiConfig = async ({
 
     const res = await fetch(process.env.NEXT_PUBLIC_API_URL + url, {
       ...fetchOptions,
+      cache: cache,
       next: { revalidate, tags },
     });
 

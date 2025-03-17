@@ -3,6 +3,7 @@ import BottomAngle from "./BottomAngle";
 import Calendar from "./Calendar";
 import Check from "./Check";
 import Close from "./Close";
+import Comment from "./Comment";
 import LeftCurvedArrow from "./LeftCurvedArrow";
 import Person from "./Person";
 import PieChart from "./PieChart";
@@ -13,6 +14,7 @@ export type IconNameType =
   | "calendar"
   | "check"
   | "close"
+  | "comment"
   | "left-curved-arrow"
   | "person"
   | "pie-chart";
@@ -42,6 +44,9 @@ const Icon = ({ iconName, width, height, color }: IconProps) => {
       break;
     case "close":
       IconComponet = Close;
+      break;
+    case "comment":
+      IconComponet = Comment;
       break;
     case "left-curved-arrow":
       IconComponet = LeftCurvedArrow;

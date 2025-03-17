@@ -32,19 +32,23 @@ function CommentsSection({ taskId }: IProps) {
           </span>
         </h2>
 
-        {comments?.map(comment => {
-          const { sub_comments, ...rest } = comment;
-          return (
-            <div key={comment.id} className="flex flex-col gap-5">
-              <Comment {...rest} />
+        {comments.length > 0 ? (
+          comments?.map(comment => {
+            const { sub_comments, ...rest } = comment;
+            return (
+              <div key={comment.id} className="flex flex-col gap-5">
+                <Comment {...rest} />
 
-              {sub_comments &&
-                sub_comments.map(subComment => (
-                  <Comment key={subComment.id} {...subComment} isSubcomment />
-                ))}
-            </div>
-          );
-        })}
+                {sub_comments &&
+                  sub_comments.map(subComment => (
+                    <Comment key={subComment.id} {...subComment} isSubcomment />
+                  ))}
+              </div>
+            );
+          })
+        ) : (
+          <p>კომენტარი არ არის</p>
+        )}
       </div>
     </section>
   );
