@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { hostname: "momentum.redberryinternship.ge" },
       { hostname: "www.pacific-research.com" },
+      { hostname: "api.dicebear.com" },
     ],
   },
 };

@@ -3,3 +3,4 @@ export * from "./department.types";
 export * from "./employee.types";
 export * from "./priority.types";
 export * from "./status.types";
+export * from "./task.types";

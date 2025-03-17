@@ -1,10 +1,20 @@
 import Image from "next/image";
+import { useMemo } from "react";
 
 import { Icon } from "@/components";
+import { EmployeeType, StatusType } from "@/types";
+import { formatDateWithDay } from "@/helper";
 
-type IProps = { data?: object };
+type IProps = {
+  id: number;
+  due_date: string;
+  employee: EmployeeType;
+  status: StatusType;
+};
 
-function Details({}: IProps) {
+function Details({ status, employee, due_date }: IProps) {
+  const formatedDate = useMemo(() => formatDateWithDay(due_date), [due_date]);
+
   return (
     <div className="flex flex-col gap-4">
       <h2 className="text-2xl font-medium">დავალების დეტალები</h2>
@@ -25,18 +35,16 @@ function Details({}: IProps) {
           </div>
           <div className="flex items-center gap-3">
             <Image
-              src={
-                "https://momentum.redberryinternship.ge/storage/employee-avatars/iWqIr6QWRo6V1ofnenkctiyJRPKh4ar0LmxF8FYQ.png"
-              }
-              alt={"name"}
+              src={employee.avatar}
+              alt={employee.name}
               width={32}
               height={32}
-              className="h-8 w-8 rounded-full"
+              className="h-8 w-8 overflow-hidden rounded-full"
             />
 
             <div className="flex flex-col">
-              <p className="text-xs text-gray-600">დიზაინის დეპარტამენტი</p>
-              <p className="text-sm">ელაია ბაგრატიონი</p>
+              <p className="text-xs text-gray-600">{employee.department.name}</p>
+              <p className="text-sm">{`${employee.name} ${employee.surname}`}</p>
             </div>
           </div>
         </div>
@@ -46,7 +54,7 @@ function Details({}: IProps) {
             <Icon iconName="calendar" />
             <span>დავალების ვადა</span>
           </div>
-          <div className="">ორშ - 02/2/2025</div>
+          <div className="text-sm">{formatedDate}</div>
         </div>
       </div>
     </div>

@@ -19,7 +19,7 @@ function Comment({ id, author_nickname, author_avatar, text, task_id, isSubcomme
 
   return (
     <div className={`flex items-start gap-3 ${isSubcomment && "ml-[50px]"}`}>
-      <Image src={author_avatar} alt={author_nickname} width={38} height={38} />
+      <Image src={author_avatar} alt={author_nickname} width={38} height={38} unoptimized />
 
       <div className="flex w-full flex-col gap-2">
         <h3 className="text-lg font-semibold">{author_nickname}</h3>

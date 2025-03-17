@@ -1,4 +1,5 @@
 import { apiConfig } from "@/config";
+import { TaskType } from "@/types";
 
 export const getAllTasks = async () => {
   try {
@@ -20,7 +21,7 @@ export const createNewTask = async (data: object) => {
 
 export const retrieveTaskById = async (taskId: number | string) => {
   try {
-    return apiConfig({ url: `/tasks${taskId}` });
+    return apiConfig({ url: `/tasks/${taskId}` }) as Promise<TaskType>;
   } catch (err) {
     // TODO toast error
     console.error(err);
