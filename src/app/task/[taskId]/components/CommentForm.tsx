@@ -6,6 +6,7 @@ import { ZodError } from "zod";
 import { MainButton } from "@/components";
 import { commentOnTaskSchema } from "@/validations";
 import { createNewComment } from "@/services";
+import { useCommentsStore } from "@/stores";
 
 interface IProps {
   parentId: number | null;
@@ -21,14 +22,21 @@ type CommentFormState = {
 };
 
 function CommentForm({ parentId, taskId, isColapsed = false, onSubmit, onClose }: IProps) {
+  const { addComment } = useCommentsStore();
+
   const [, submitAction, isPending] = useActionState<CommentFormState, FormData>(
     async (prevState: CommentFormState, formData: FormData) => {
       const commentText = formData.get("comment") as string;
 
       try {
-        await commentOnTaskSchema.parseAsync(commentText);
+        const validatedCommentText = await commentOnTaskSchema.parseAsync(commentText);
 
-        await createNewComment(taskId, { parent_id: parentId, text: commentText });
+        const newComment = await createNewComment(taskId, {
+          parent_id: parentId,
+          text: validatedCommentText,
+        });
+
+        if (newComment) addComment(newComment);
 
         if (onSubmit) {
           onSubmit();

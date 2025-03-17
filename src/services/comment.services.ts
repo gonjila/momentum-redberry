@@ -1,3 +1,7 @@
+"use server";
+
+import { revalidateTag } from "next/cache";
+
 import { apiConfig } from "@/configs";
 import { CommentType, NewCommentBodyType } from "@/types";
 
@@ -22,6 +26,8 @@ export const createNewComment = async (taskId: number | string, data: NewComment
       body: data,
       tags: [COMMENTS_TAG],
     });
+
+    revalidateTag(COMMENTS_TAG);
 
     return res as CommentType;
   } catch (err) {

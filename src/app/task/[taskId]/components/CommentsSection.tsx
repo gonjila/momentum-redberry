@@ -1,4 +1,8 @@
-import { getTaskComments } from "@/services";
+"use client";
+
+import { useEffect } from "react";
+
+import { useCommentsStore } from "@/stores";
 
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
@@ -7,8 +11,14 @@ type IProps = {
   taskId: number;
 };
 
-async function CommentsSection({ taskId }: IProps) {
-  const commentsData = await getTaskComments(taskId);
+function CommentsSection({ taskId }: IProps) {
+  const { comments, fetchComments, clearComments } = useCommentsStore();
+
+  useEffect(() => {
+    fetchComments(taskId);
+
+    return () => clearComments();
+  }, [clearComments, fetchComments, taskId]);
 
   return (
     <section className="mt-10 flex flex-1 flex-col gap-16 rounded-[10px] bg-[#DDD2FF] px-11 py-10">
@@ -18,11 +28,11 @@ async function CommentsSection({ taskId }: IProps) {
         <h2 className="flex items-center gap-2 text-[20px] font-medium">
           კომენტარები
           <span className="bg-main rounded-full px-3 py-1 text-sm text-white">
-            {commentsData?.length || 0}
+            {comments?.length || 0}
           </span>
         </h2>
 
-        {commentsData?.map(comment => {
+        {comments?.map(comment => {
           const { sub_comments, ...rest } = comment;
           return (
             <div key={comment.id} className="flex flex-col gap-5">
