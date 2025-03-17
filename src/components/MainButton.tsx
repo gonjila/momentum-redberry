@@ -4,12 +4,14 @@ type Props = {
   variant: "filled" | "outlined" | "text" | "rounded";
   title: string;
   iconName?: IconNameType;
+  iconSize?: number;
+  disabled?: boolean;
   className?: string;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
-function MainButton({ variant, title, iconName, className, onClick }: Props) {
-  const baseStyles = "px-4 py-2 rounded-lg flex items-center gap-1 cursor-pointer transition-all";
+function MainButton({ variant, title, iconName, iconSize, disabled, className, onClick }: Props) {
+  const baseStyles = "px-4 py-2  rounded-lg flex items-center gap-1 cursor-pointer transition-all";
   const variantStyles = {
     filled: "text-white bg-main-100 hover:bg-main",
     outlined: "border border-main-100 hover:border-main",
@@ -18,8 +20,12 @@ function MainButton({ variant, title, iconName, className, onClick }: Props) {
   };
 
   return (
-    <button onClick={onClick} className={`${baseStyles} ${variantStyles[variant]} ${className}`}>
-      {iconName && <Icon iconName={iconName} />}
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`${baseStyles} ${variantStyles[variant]} ${className}`}
+    >
+      {iconName && <Icon iconName={iconName} width={iconSize} height={iconSize} />}
 
       <span>{title}</span>
     </button>

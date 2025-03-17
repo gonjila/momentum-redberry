@@ -20,7 +20,7 @@ function TaskPage() {
               <DepartmentsBadge id={3} name="department" size="large" />
             </div>
 
-            <h1 className="text-[36px] font-semibold">Redberry-ს საიტის ლენდინგის დიზაინი</h1>
+            <h1 className="text-[34px] font-semibold">Redberry-ს საიტის ლენდინგის დიზაინი</h1>
           </div>
 
           <p className="text-lg">
