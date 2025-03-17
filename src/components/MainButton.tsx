@@ -1,6 +1,9 @@
+import { ButtonHTMLAttributes } from "react";
+
 import Icon, { IconNameType } from "./icons";
 
 type Props = {
+  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
   variant: "filled" | "outlined" | "text" | "rounded";
   title: string;
   iconName?: IconNameType;
@@ -10,7 +13,16 @@ type Props = {
   onClick?: () => void;
 };
 
-function MainButton({ variant, title, iconName, iconSize, disabled, className, onClick }: Props) {
+function MainButton({
+  type = "button",
+  variant,
+  title,
+  iconName,
+  iconSize,
+  disabled,
+  className,
+  onClick,
+}: Props) {
   const baseStyles = "px-4 py-2  rounded-lg flex items-center gap-1 cursor-pointer transition-all";
   const variantStyles = {
     filled: "text-white bg-main-100 hover:bg-main",
@@ -21,8 +33,9 @@ function MainButton({ variant, title, iconName, iconSize, disabled, className, o
 
   return (
     <button
-      onClick={onClick}
+      type={type}
       disabled={disabled}
+      onClick={onClick}
       className={`${baseStyles} ${variantStyles[variant]} ${className}`}
     >
       {iconName && <Icon iconName={iconName} width={iconSize} height={iconSize} />}

@@ -1,4 +1,4 @@
-import { apiConfig } from "@/config";
+import { apiConfig } from "@/configs";
 
 export const getAllPriorities = async () => {
   try {

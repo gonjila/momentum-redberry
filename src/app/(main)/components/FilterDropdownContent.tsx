@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { DepartmentType, EmployeeType, PriorityType } from "@/types";
-import { FilterDataKeysType, PosiblyActivatedFilterItem, useFiltersStore } from "@/store";
+import { FilterDataKeysType, PosiblyActivatedFilterItem, useFiltersStore } from "@/stores";
 import { MainButton } from "@/components";
 
 import FilterContentItem from "./FilterContentItem";

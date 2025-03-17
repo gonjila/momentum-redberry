@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 import { Icon } from "@/components";
 import { EmployeeType, StatusType } from "@/types";
-import { formatDateWithDay } from "@/helper";
+import { formatDateWithDay } from "@/helpers";
 
 type IProps = {
   id: number;
@@ -20,6 +20,7 @@ function Details({ status, employee, due_date }: IProps) {
       <h2 className="text-2xl font-medium">დავალების დეტალები</h2>
 
       <div className="flex flex-col">
+        {/* TODO status select */}
         <div className="flex items-center py-3">
           <div className="flex w-[235px] items-center gap-1.5">
             <Icon iconName="pie-chart" />

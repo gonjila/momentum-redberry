@@ -1,4 +1,4 @@
-import { apiConfig } from "@/config";
+import { apiConfig } from "@/configs";
 import { TaskType } from "@/types";
 
 export const getAllTasks = async () => {

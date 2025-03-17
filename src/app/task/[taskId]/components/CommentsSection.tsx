@@ -12,7 +12,7 @@ async function CommentsSection({ taskId }: IProps) {
 
   return (
     <section className="mt-10 flex flex-1 flex-col gap-16 rounded-[10px] bg-[#DDD2FF] px-11 py-10">
-      <CommentForm parentId={null} taskId={1} />
+      <CommentForm parentId={null} taskId={taskId} />
 
       <div className="flex flex-col gap-10">
         <h2 className="flex items-center gap-2 text-[20px] font-medium">

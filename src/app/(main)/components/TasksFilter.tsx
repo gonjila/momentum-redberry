@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { FilterDataKeysType, useFiltersStore } from "@/store";
+import { FilterDataKeysType, useFiltersStore } from "@/stores";
 import { MainButton } from "@/components";
 
 import FilterTypeBtn from "./FilterTypeBtn";

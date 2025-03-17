@@ -39,9 +39,7 @@ const apiConfig = async ({
 
     if (!res.ok) {
       const errorResponse = await res.json();
-      throw new Error(
-        errorResponse?.message || errorResponse || "An error occurred while fetching data.",
-      );
+      throw errorResponse?.message || errorResponse || "An error occurred while fetching data.";
     }
 
     return await res.json();

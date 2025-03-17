@@ -7,3 +7,8 @@ export type CommentType = {
   author_nickname: string;
   sub_comments?: CommentType[];
 };
+
+export type NewCommentBodyType = {
+  text: string;
+  parent_id: number | null;
+};

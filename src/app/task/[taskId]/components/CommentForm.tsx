@@ -1,8 +1,11 @@
 "use client";
 
 import { useActionState } from "react";
+import { ZodError } from "zod";
 
 import { MainButton } from "@/components";
+import { commentOnTaskSchema } from "@/validations";
+import { createNewComment } from "@/services";
 
 interface IProps {
   parentId: number | null;
@@ -14,20 +17,34 @@ interface IProps {
 
 type CommentFormState = {
   commentText: string;
+  error: string | null;
 };
 
 function CommentForm({ parentId, taskId, isColapsed = false, onSubmit, onClose }: IProps) {
   const [, submitAction, isPending] = useActionState<CommentFormState, FormData>(
-    (prevState: CommentFormState, formData: FormData) => {
+    async (prevState: CommentFormState, formData: FormData) => {
       const commentText = formData.get("comment") as string;
 
-      if (onSubmit) {
-        onSubmit();
-      }
+      try {
+        await commentOnTaskSchema.parseAsync(commentText);
 
-      return { commentText };
+        await createNewComment(taskId, { parent_id: parentId, text: commentText });
+
+        if (onSubmit) {
+          onSubmit();
+        }
+
+        return { commentText, error: null };
+      } catch (err) {
+        const errorMessage =
+          err instanceof ZodError && Array.isArray(err.errors) && err.errors[0]?.message
+            ? err.errors[0].message
+            : "An unknown error occurred while commenting on task";
+
+        return { commentText: "", error: errorMessage };
+      }
     },
-    { commentText: "" },
+    { commentText: "", error: null },
   );
 
   return (
@@ -43,6 +60,7 @@ function CommentForm({ parentId, taskId, isColapsed = false, onSubmit, onClose }
         className={`absolute flex items-center gap-2 ${isColapsed ? "right-2 bottom-2 px-3! py-1! text-sm" : "right-5 bottom-4"}`}
       >
         <MainButton
+          type="submit"
           variant="rounded"
           title={isPending ? "იგზავნება..." : "დააკომენტარე"}
           disabled={isPending}
@@ -52,7 +70,7 @@ function CommentForm({ parentId, taskId, isColapsed = false, onSubmit, onClose }
           <MainButton
             variant="rounded"
             title={"დახურვა"}
-            disabled={isPending}
+            onClick={onClose}
             className={`bg-gray-300! text-black! ${isColapsed ? "px-3! py-1! text-sm" : ""}`}
           />
         )}

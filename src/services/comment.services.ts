@@ -1,9 +1,11 @@
-import { apiConfig } from "@/config";
-import { CommentType } from "@/types";
+import { apiConfig } from "@/configs";
+import { CommentType, NewCommentBodyType } from "@/types";
+
+const COMMENTS_TAG = "comments";
 
 export const getTaskComments = async (taskId: number | string) => {
   try {
-    const res = await apiConfig({ url: `/tasks/${taskId}/comments` });
+    const res = await apiConfig({ url: `/tasks/${taskId}/comments`, tags: [COMMENTS_TAG] });
 
     return res as CommentType[];
   } catch (err) {
@@ -12,17 +14,18 @@ export const getTaskComments = async (taskId: number | string) => {
   }
 };
 
-export const createNewComment = async (taskId: number | string, data: object) => {
+export const createNewComment = async (taskId: number | string, data: NewCommentBodyType) => {
   try {
     const res = await apiConfig({
       url: `/tasks/${taskId}/comments`,
       method: "POST",
       body: data,
+      tags: [COMMENTS_TAG],
     });
 
     return res as CommentType;
   } catch (err) {
     // TODO toast error
-    console.error(err);
+    console.error({ createNewCommentError: err });
   }
 };
