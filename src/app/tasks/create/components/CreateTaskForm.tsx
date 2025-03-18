@@ -11,6 +11,38 @@ import {
   titleValidations,
 } from "@/validations";
 
+// TODO delete
+const selectOptions = [
+  {
+    id: 1,
+    value: "user1",
+    name: "თამარ კაკაბაძე 1",
+    avatar:
+      "https://momentum.redberryinternship.ge/storage/employee-avatars/iWqIr6QWRo6V1ofnenkctiyJRPKh4ar0LmxF8FYQ.png",
+  },
+  {
+    id: 2,
+    value: "user2",
+    name: "თამარ კაკაბაძე 2",
+    // avatar:
+    //   "https://momentum.redberryinternship.ge/storage/employee-avatars/iWqIr6QWRo6V1ofnenkctiyJRPKh4ar0LmxF8FYQ.png",
+  },
+  {
+    id: 3,
+    value: "user3",
+    name: "თამარ კაკაბაძე 3",
+    // avatar:
+    //   "https://momentum.redberryinternship.ge/storage/employee-avatars/iWqIr6QWRo6V1ofnenkctiyJRPKh4ar0LmxF8FYQ.png",
+  },
+  {
+    id: 4,
+    value: "user4",
+    name: "თამარ კაკაბაძე 4",
+    avatar:
+      "https://momentum.redberryinternship.ge/storage/employee-avatars/iWqIr6QWRo6V1ofnenkctiyJRPKh4ar0LmxF8FYQ.png",
+  },
+];
+
 function CreateTaskForm() {
   const { control, handleSubmit } = useForm<CreateTaskSchemaType>({
     resolver: zodResolver(createTaskSchema),
@@ -36,14 +68,53 @@ function CreateTaskForm() {
           validations={titleValidations}
         />
 
-        <MainSelect name="department" label="დეპარტამენტი" isRequired />
+        {/* <MainSelect
+          name="department"
+          label="დეპარტამენტი"
+          isRequired
+          options={selectOptions}
+          defaultValue={selectOptions[0]}
+        /> */}
 
         <MainInput
           name="description"
           control={control}
           label="აღწერა"
+          type="textarea"
+          rows={2}
           validations={descriptionValidations}
         />
+
+        <MainSelect
+          name="employee_id"
+          control={control}
+          label="პასუხისმგებელი თანამშრომელი"
+          isRequired
+          options={selectOptions}
+          defaultValue={selectOptions[0]}
+          onMenuHeaderClick={() => {}}
+        />
+
+        <div className="flex gap-8">
+          <MainSelect
+            name="priority_id"
+            control={control}
+            label="პრიორიტეტი"
+            isRequired
+            options={selectOptions}
+            defaultValue={selectOptions[1]}
+          />
+          <MainSelect
+            name="status_id"
+            control={control}
+            label="სტატუსი"
+            isRequired
+            options={selectOptions}
+            defaultValue={selectOptions[2]}
+          />
+        </div>
+
+        <MainInput name="due_date" control={control} isRequired label="დედლაინი" />
       </div>
 
       <div className="flex justify-end">

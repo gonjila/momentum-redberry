@@ -11,10 +11,10 @@ function Add({ width, height, color }: IProps) {
       xmlns="http://www.w3.org/2000/svg"
       width={height || "24px"}
       height={width || "24px"}
-      fill={color || "#e8eaed"}
+      stroke={color || "currentColor"}
     >
-      <path d="M5 10H15" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M10 15V5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M5 10H15" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10 15V5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

@@ -7,25 +7,27 @@ type Props = {
   name: string;
   control: Control<any>;
   label?: string;
+  type?: HTMLInputTypeAttribute | "textarea";
   isRequired?: boolean;
   placeholder?: string;
-  type?: HTMLInputTypeAttribute;
+  rows?: number;
   validations?: { message: string; check: (value: string) => boolean }[];
 };
 
-function MainInput({
+function MainField({
   name,
   control,
   label,
+  type = "text",
   isRequired,
   placeholder,
-  type = "text",
+  rows,
   validations,
 }: Props) {
   const {
     field: { value, onChange, ref },
     fieldState: { error, isDirty, invalid },
-  } = useController({ name, control });
+  } = useController({ name, control, defaultValue: "" });
 
   return (
     <div className="flex flex-col gap-1.5">
@@ -35,15 +37,31 @@ function MainInput({
         </label>
       )}
 
-      <input
-        ref={ref}
-        id={name}
-        type={type}
-        placeholder={placeholder}
-        value={value || ""}
-        onChange={onChange}
-        className={`text-md rounded-md border p-3 outline-0 transition-all ${error ? "border-red-500" : "border-[#DEE2E6] bg-white"} `}
-      />
+      {type === "textarea" ? (
+        <textarea
+          ref={ref}
+          id={name}
+          placeholder={placeholder}
+          rows={rows || 4}
+          value={value}
+          onChange={onChange}
+          className={`text-md resize-none rounded-md border bg-white p-3 outline-0 transition-all ${
+            error ? "border-red-500" : "border-[#DEE2E6]"
+          }`}
+        />
+      ) : (
+        <input
+          ref={ref}
+          id={name}
+          type={type}
+          placeholder={placeholder}
+          value={value || ""}
+          onChange={onChange}
+          className={`text-md rounded-md border bg-white p-3 outline-0 transition-all ${
+            error ? "border-red-500" : "border-[#DEE2E6]"
+          }`}
+        />
+      )}
 
       {validations && (
         <div className="flex flex-col gap-[2px] text-xs">
@@ -52,7 +70,9 @@ function MainInput({
             return (
               <span
                 key={index}
-                className={`flex items-center gap-1 ${!isDirty && !invalid && "text-gray-500!"} ${isValid ? "text-green-500" : "text-red-500"}`}
+                className={`flex items-center gap-1 ${!isDirty && !invalid && "text-gray-500!"} ${
+                  isValid ? "text-green-500" : "text-red-500"
+                }`}
               >
                 {message}
               </span>
@@ -64,4 +84,4 @@ function MainInput({
   );
 }
 
-export default MainInput;
+export default MainField;

@@ -2,51 +2,45 @@
 
 import Image from "next/image";
 import Select, { components, SingleValueProps, OptionProps, MenuListProps } from "react-select";
-import { Placeholder } from "react-select/animated";
+import { useController, Control } from "react-hook-form";
 
-interface OptionType {
-  value: string;
-  label: string;
-  avatar?: string;
-}
+import Icon from "./icons";
 
-interface MainSelectProps {
+type OptionType = {
+  id: number;
   name: string;
+  surname?: string;
+  avatar?: string;
+};
+
+interface IProps {
+  name: string;
+  control: Control<any>;
   label?: string;
   isRequired?: boolean;
   placeholder?: string;
+  options: OptionType[];
+  defaultValue?: OptionType;
+  onMenuHeaderClick?: () => void;
 }
 
-const options: OptionType[] = [
-  {
-    value: "user1",
-    label: "თამარ კაკაბაძე",
-    avatar:
-      "https://momentum.redberryinternship.ge/storage/employee-avatars/iWqIr6QWRo6V1ofnenkctiyJRPKh4ar0LmxF8FYQ.png",
-  },
-  {
-    value: "user2",
-    label: "თამარ კაკაბაძე",
-    // avatar:
-    //   "https://momentum.redberryinternship.ge/storage/employee-avatars/iWqIr6QWRo6V1ofnenkctiyJRPKh4ar0LmxF8FYQ.png",
-  },
-  {
-    value: "user3",
-    label: "თამარ კაკაბაძე",
-    // avatar:
-    //   "https://momentum.redberryinternship.ge/storage/employee-avatars/iWqIr6QWRo6V1ofnenkctiyJRPKh4ar0LmxF8FYQ.png",
-  },
-  {
-    value: "user4",
-    label: "თამარ კაკაბაძე",
-    avatar:
-      "https://momentum.redberryinternship.ge/storage/employee-avatars/iWqIr6QWRo6V1ofnenkctiyJRPKh4ar0LmxF8FYQ.png",
-  },
-];
+const MainSelect = ({
+  name,
+  control,
+  label,
+  isRequired,
+  placeholder,
+  options,
+  defaultValue,
+  onMenuHeaderClick,
+}: IProps) => {
+  const {
+    field: { value, onChange },
+    fieldState: { error },
+  } = useController({ name, control, defaultValue: defaultValue?.id });
 
-const MainSelect = ({ name, label, isRequired, placeholder }: MainSelectProps) => {
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-1 flex-col gap-1.5">
       {label && (
         <label htmlFor={name} className="font-medium text-gray-700">
           {label} {isRequired && "*"}
@@ -55,20 +49,30 @@ const MainSelect = ({ name, label, isRequired, placeholder }: MainSelectProps) =
 
       <Select
         id={name}
-        options={options}
         placeholder={placeholder}
+        options={options}
+        defaultValue={defaultValue}
+        getOptionLabel={option => option.name}
+        getOptionValue={option => option.id.toString()}
+        value={options.find(option => option.id === value)}
+        onChange={newValue => onChange((newValue as OptionType)?.id)}
         isSearchable={false}
         components={{
           SingleValue: CustomSingleValue,
           Option: CustomOption,
-          MenuList: CustomMenuList,
+          MenuList: props => CustomMenuList(props, onMenuHeaderClick),
         }}
         styles={{
-          indicatorSeparator: () => ({ displey: "none" }),
-          control: styles => ({ ...styles, padding: "12px" }),
-          input: styles => ({ ...styles, backgroundColor: "red" }),
-          singleValue: (styles, { data }) => ({ ...styles, backgroundColor: "red" }),
-          placeholder: styles => ({ ...styles }),
+          control: (styles, state) => ({
+            ...styles,
+
+            borderColor: error ? "red" : state.menuIsOpen ? "#cccfd3" : "#dee2e6",
+            boxShadow: "none",
+            "&:hover": {},
+          }),
+          valueContainer: styles => ({ ...styles, padding: 0, display: "flex" }),
+          placeholder: styles => ({ ...styles, padding: "12px" }),
+          indicatorSeparator: () => ({ display: "none" }),
         }}
       />
     </div>
@@ -78,54 +82,62 @@ const MainSelect = ({ name, label, isRequired, placeholder }: MainSelectProps) =
 export default MainSelect;
 
 // Custom selected item (Single Value)
-const CustomSingleValue = ({ data }: SingleValueProps<OptionType>) => (
-  <div className="flex items-center gap-2">
-    {data.avatar && (
-      <Image
-        src={data.avatar}
-        alt={data.label}
-        width={32}
-        height={32}
-        className="h-8 w-8 rounded-full"
-      />
-    )}
-    <span>{data.label}</span>
-  </div>
-);
-
-// Custom dropdown option
-const CustomOption = (props: OptionProps<OptionType>) => {
-  const { data, innerRef, innerProps } = props;
+const CustomSingleValue = ({ data }: SingleValueProps<OptionType>) => {
   return (
     <div
-      ref={innerRef}
-      {...innerProps}
-      className="flex cursor-pointer items-center gap-2 p-2 hover:bg-gray-100"
+      className="flex flex-1 items-center gap-2"
+      style={{ padding: data.avatar ? "8px 12px" : "12px" }}
     >
       {data.avatar && (
         <Image
           src={data.avatar}
-          alt={data.label}
+          alt={data.name}
+          width={32}
+          height={32}
+          className="h-8 w-8 rounded-full"
+        />
+      )}
+      <span>{data.name}</span>
+    </div>
+  );
+};
+
+// Custom dropdown option
+const CustomOption = (props: OptionProps<OptionType>) => {
+  const { data, innerRef, innerProps, isSelected } = props;
+  return (
+    <div
+      ref={innerRef}
+      {...innerProps}
+      className={`flex cursor-pointer items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 ${isSelected ? "bg-gray-300 text-black" : "text-gray-600"}`}
+    >
+      {data.avatar && (
+        <Image
+          src={data.avatar}
+          alt={data.name}
           width={26}
           height={26}
           className="h-6 w-6 rounded-full"
         />
       )}
-      <span>{data.label}</span>
+      <span>{data.name}</span>
     </div>
   );
 };
 
 // Custom dropdown menu with "Add Employee" button
-const CustomMenuList = (props: MenuListProps<OptionType>) => {
+const CustomMenuList = (props: MenuListProps<OptionType>, onClick?: () => void) => {
   return (
     <div>
-      <div
-        className="flex cursor-pointer items-center gap-2 border-b bg-gray-100 px-4 py-2 font-medium text-purple-600"
-        onClick={() => alert("Adding Employee")}
-      >
-        ➕ <span>დაამატე თანამშრომელი</span>
-      </div>
+      {onClick && (
+        <div
+          className="text-main hover:bg-main-100 flex cursor-pointer items-center gap-2 border-b p-4 font-medium transition-all duration-500 hover:text-white"
+          onClick={onClick}
+        >
+          <Icon iconName="add" />
+          <span>დაამატე თანამშრომელი</span>
+        </div>
+      )}
       <components.MenuList {...props} />
     </div>
   );
