@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { MainButton, MainInput } from "@/components";
+import { MainButton, MainInput, MainSelect } from "@/components";
 import {
   createTaskSchema,
   CreateTaskSchemaType,
@@ -35,6 +35,8 @@ function CreateTaskForm() {
           isRequired
           validations={titleValidations}
         />
+
+        <MainSelect name="department" label="დეპარტამენტი" isRequired />
 
         <MainInput
           name="description"
