@@ -21,7 +21,7 @@ function CommentsSection({ taskId }: IProps) {
   }, [clearComments, fetchComments, taskId]);
 
   return (
-    <section className="mt-10 flex flex-1 flex-col gap-16 rounded-[10px] bg-[#DDD2FF] px-11 py-10">
+    <section className="bg-pink mt-10 flex flex-1 flex-col gap-16 rounded-[10px] px-11 py-10">
       <CommentForm parentId={null} taskId={taskId} />
 
       <div className="flex flex-col gap-10">

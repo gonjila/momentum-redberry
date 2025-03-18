@@ -21,7 +21,7 @@ function MainHeader() {
           variant="filled"
           title="შექმენი ახალი დავალება"
           iconName="add"
-          onClick={() => router.push("/task/create")}
+          onClick={() => router.push("/tasks/create")}
         />
       </div>
     </header>

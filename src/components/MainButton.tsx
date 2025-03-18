@@ -36,7 +36,7 @@ function MainButton({
       type={type}
       disabled={disabled}
       onClick={onClick}
-      className={`${baseStyles} ${variantStyles[variant]} ${className}`}
+      className={`${baseStyles} ${variantStyles[variant]} ${className} ${disabled && "cursor-not-allowed!"}`}
     >
       {iconName && <Icon iconName={iconName} width={iconSize} height={iconSize} />}
 
