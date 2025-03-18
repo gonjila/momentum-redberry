@@ -11,6 +11,8 @@ import {
   titleValidations,
 } from "@/validations";
 
+import { CustomDataPicker } from ".";
+
 // TODO delete
 const selectOptions = [
   {
@@ -61,7 +63,7 @@ function CreateTaskForm() {
     >
       <div className="grid grid-cols-2 gap-x-40 gap-y-14">
         <MainInput
-          name="title"
+          name="name"
           control={control}
           label="სათაური"
           isRequired
@@ -114,7 +116,8 @@ function CreateTaskForm() {
           />
         </div>
 
-        <MainInput name="due_date" control={control} isRequired label="დედლაინი" />
+        {/* <MainInput name="due_date" control={control} isRequired label="დედლაინი" /> */}
+        <CustomDataPicker name="due_date" control={control} isRequired label="დედლაინი" />
       </div>
 
       <div className="flex justify-end">
