@@ -1,16 +1,17 @@
 "use client";
-
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
 import { useController, Control } from "react-hook-form";
+import { useEffect, useRef, useState } from "react";
 
 import { Icon } from "@/components";
+import { formatDateForDatePickerValue } from "@/helpers";
 
 type Props = {
   name: string;
   control: Control<any>;
   label?: string;
-  format?: string;
+  placeholder?: string;
   isRequired?: boolean;
 };
 
@@ -18,16 +19,33 @@ export default function CustomDatePicker({
   name,
   control,
   label,
-  format = "dd/MM/YYYY",
+  placeholder = "DD.MM.YYYY",
   isRequired,
 }: Props) {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const [isPickerOpened, setIsPickerOpened] = useState(false);
+
   const {
     field: { value, onChange },
     fieldState: { error },
-  } = useController({ name, control });
+  } = useController({ name, control, defaultValue: "" });
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsPickerOpened(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const formattedValue = (value && formatDateForDatePickerValue(value)) || "";
 
   return (
-    <div className="flex flex-col gap-1.5">
+    <div ref={dropdownRef} className="flex flex-col gap-1.5">
       {label && (
         <label className="text-gray-700">
           {label} {isRequired && "*"}
@@ -35,7 +53,8 @@ export default function CustomDatePicker({
       )}
 
       <div
-        className={`relative flex flex-col rounded-md border bg-white transition-all ${
+        onClick={() => setIsPickerOpened(prev => !prev)}
+        className={`relative flex h-[50px] flex-col rounded-md border bg-white p-3 pl-11 transition-all ${
           error ? "border-red-500" : "border-[#DEE2E6]"
         }`}
       >
@@ -43,13 +62,23 @@ export default function CustomDatePicker({
           <Icon iconName="calendar" />
         </div>
 
-        <DatePicker
-          selected={value}
-          placeholderText={format}
-          onChange={onChange}
-          dateFormat={format}
-          className={`text-md w-full p-3 pl-12 outline-0`}
-        />
+        <p className={formattedValue ? "" : "text-gray-500"}>{formattedValue || placeholder}</p>
+
+        <div
+          onClick={ev => ev.stopPropagation()}
+          className={`absolute bottom-[120%] left-0 overflow-hidden rounded-lg border border-gray-300 bg-white transition-all duration-1000 ${isPickerOpened ? "h-[368px] opacity-100" : "h-0 opacity-0"}`}
+        >
+          <DayPicker
+            animate
+            mode="single"
+            selected={value}
+            onSelect={val => {
+              onChange(val);
+              setIsPickerOpened(false);
+            }}
+            className={`text-md w-full px-6 py-3 outline-0`}
+          />
+        </div>
       </div>
     </div>
   );

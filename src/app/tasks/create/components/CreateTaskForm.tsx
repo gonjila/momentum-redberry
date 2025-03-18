@@ -10,6 +10,7 @@ import {
   descriptionValidations,
   titleValidations,
 } from "@/validations";
+import { formatDateForTaskApi } from "@/helpers";
 
 import { CustomDataPicker } from ".";
 
@@ -52,8 +53,10 @@ function CreateTaskForm() {
   });
 
   const onSubmit = (data: CreateTaskSchemaType) => {
+    const preparedData = { ...data, due_date: formatDateForTaskApi(data.due_date.toISOString()) };
+
     // eslint-disable-next-line no-console
-    console.log("Form submitted", data);
+    console.log("Form submitted", preparedData);
   };
 
   return (
@@ -116,7 +119,6 @@ function CreateTaskForm() {
           />
         </div>
 
-        {/* <MainInput name="due_date" control={control} isRequired label="დედლაინი" /> */}
         <CustomDataPicker name="due_date" control={control} isRequired label="დედლაინი" />
       </div>
 

@@ -1,8 +1,8 @@
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import { ka } from "date-fns/locale"; // Georgian locale
 
 function formatDateBase(dateString: string, dateFormat: string) {
-  const date = parseISO(dateString); // Ensures correct UTC parsing
+  const date = new Date(dateString); // Ensures correct UTC parsing
   return format(date, dateFormat, { locale: ka });
 }
 
@@ -12,4 +12,12 @@ export function formatDateWithDay(dateString: string) {
 
 export function formatDate(dateString: string) {
   return formatDateBase(dateString, "dd MMM, yyyy"); // "22 იანვ, 2022"
+}
+
+export function formatDateForDatePickerValue(dateString: string) {
+  return formatDateBase(dateString, "dd.MM.yyyy"); // 14.01.2025
+}
+
+export function formatDateForTaskApi(dateString: string) {
+  return formatDateBase(dateString, "yyyy-MM-dd"); // 2025-12-31
 }
