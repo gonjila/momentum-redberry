@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Select, { components, SingleValueProps, OptionProps, MenuListProps } from "react-select";
 import { useController, Control } from "react-hook-form";
+import { useRef } from "react";
 
 import Icon from "./icons";
 
@@ -34,6 +35,8 @@ const MainSelect = ({
   defaultValue,
   onMenuHeaderClick,
 }: IProps) => {
+  const selectRef = useRef<any>(null);
+
   const {
     field: { value, onChange },
     fieldState: { error },
@@ -42,13 +45,19 @@ const MainSelect = ({
   return (
     <div className="flex flex-1 flex-col gap-1.5">
       {label && (
-        <label htmlFor={name} className="font-medium text-gray-700">
+        <label
+          htmlFor={name}
+          onClick={() => selectRef.current?.focus()}
+          className="font-medium text-gray-700"
+        >
           {label} {isRequired && "*"}
         </label>
       )}
 
       <Select
         id={name}
+        ref={selectRef}
+        openMenuOnFocus
         placeholder={placeholder}
         options={options}
         defaultValue={defaultValue}
