@@ -9,6 +9,7 @@ import { formatDateForDatePickerValue } from "@/helpers";
 
 type Props = {
   name: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any>;
   label?: string;
   placeholder?: string;

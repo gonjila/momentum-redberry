@@ -48,7 +48,13 @@ const useFiltersStore = create<IFiltersStore>((set, get) => ({
   fetchFilterData: () => {
     Promise.all([getAllDepartments(), getAllPriorities(), getAllEmployees()]).then(
       ([departments, priorities, employees]) => {
-        set({ fetchedFiltersData: { departments, priorities, employees } });
+        set({
+          fetchedFiltersData: {
+            departments: departments || [],
+            priorities: priorities || [],
+            employees: employees || [],
+          },
+        });
       },
     );
   },

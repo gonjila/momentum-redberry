@@ -17,6 +17,7 @@ type OptionType = {
 
 interface IProps {
   name: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any>;
   label?: string;
   isRequired?: boolean;
@@ -38,6 +39,7 @@ const MainSelect = ({
   defaultValue,
   onMenuHeaderClick,
 }: IProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const selectRef = useRef<any>(null);
 
   const {

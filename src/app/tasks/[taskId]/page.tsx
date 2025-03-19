@@ -6,11 +6,11 @@ import { retrieveTaskById } from "@/services";
 import { CommentsSection, Details } from "./components";
 
 interface IProps {
-  params: { taskId: number };
+  params: Promise<{ taskId: number }>;
 }
 
-async function TaskPage({ params }: IProps) {
-  const { taskId } = await params;
+async function TaskPage(props: IProps) {
+  const { taskId } = await props.params;
 
   const taskData = await retrieveTaskById(taskId);
 

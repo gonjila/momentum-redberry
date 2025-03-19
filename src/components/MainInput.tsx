@@ -5,6 +5,7 @@ import { useController, Control } from "react-hook-form";
 
 type Props = {
   name: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any>;
   label?: string;
   type?: HTMLInputTypeAttribute | "textarea";
