@@ -1,9 +1,15 @@
+"use server";
+
+import { revalidateTag } from "next/cache";
+
 import { apiConfig } from "@/configs";
 import { EmployeeType } from "@/types";
 
+const EMPLOYEE_TAG = "employee";
+
 export const getAllEmployees = async () => {
   try {
-    const res = await apiConfig({ url: "/employees" });
+    const res = await apiConfig({ url: "/employees", tags: [EMPLOYEE_TAG] });
 
     return res as EmployeeType[];
   } catch (err) {
@@ -18,8 +24,10 @@ export const createNewEmpolyee = async (data: object) => {
       url: "/employees",
       method: "POST",
       body: data,
-      headers: { "Content-Type": "multipart/form-data" },
+      tags: [EMPLOYEE_TAG],
     });
+
+    revalidateTag(EMPLOYEE_TAG);
 
     return res as EmployeeType;
   } catch (err) {

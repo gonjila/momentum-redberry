@@ -1,38 +1,41 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { Control, useController } from "react-hook-form";
 
 import Icon from "./icons";
 
 interface IProps {
-  isError?: boolean;
-  onFileUpload: (file: File | null) => void;
+  name: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control: Control<any>;
 }
 
-function ImageUploader({ isError, onFileUpload }: IProps) {
+function ImageUploader({ name, control }: IProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [image, setImage] = useState<string | null>(null);
+  const {
+    field: { value, onChange },
+    fieldState: { error },
+  } = useController({ name, control });
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    onFileUpload(file);
-    setImage(URL.createObjectURL(file));
+    onChange(file);
   };
 
   const handleImageRemove = () => {
-    onFileUpload(null);
-    setImage(null);
+    onChange(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   return (
     <div
       onClick={() => fileInputRef.current?.click()}
-      className={`relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-dashed p-4 ${isError ? "border-red-500" : "border-gray-300"}`}
+      className={`relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-dashed p-4 ${error ? "border-red-500" : "border-gray-300"}`}
     >
       <input
         type="file"
@@ -42,15 +45,15 @@ function ImageUploader({ isError, onFileUpload }: IProps) {
         onChange={handleImageChange}
       />
 
-      <div className="relative aspect-square h-full" onClick={ev => image && ev.stopPropagation()}>
+      <div className="relative aspect-square h-full" onClick={ev => value && ev.stopPropagation()}>
         <Image
-          src={image || "/default-avatar.png"}
+          src={(value && URL.createObjectURL(value)) || "/default-avatar.png"}
           alt="avatar"
           width={88}
           height={88}
           className="h-full w-full rounded-full object-cover"
         />
-        {image && (
+        {value && (
           <button
             type="button"
             onClick={handleImageRemove}

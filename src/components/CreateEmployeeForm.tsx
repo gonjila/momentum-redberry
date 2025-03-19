@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import { createEmployeeSchema, CreateEmployeeSchemaType, nameValidations } from "@/validations";
 import { DepartmentType } from "@/types";
-import { getAllDepartments } from "@/services";
+import { createNewEmpolyee, getAllDepartments } from "@/services";
 
 import ImageUploader from "./ImageUploader";
 
@@ -17,10 +17,13 @@ interface IProps {
 }
 
 function CreateEmployeeForm({ onCancel }: IProps) {
-  const [file, setFile] = useState<File | null>(null);
   const [departments, setDepartments] = useState<DepartmentType[]>([]);
 
-  const { control, handleSubmit } = useForm<CreateEmployeeSchemaType>({
+  const {
+    control,
+    handleSubmit,
+    formState: { isLoading },
+  } = useForm<CreateEmployeeSchemaType>({
     resolver: zodResolver(createEmployeeSchema),
     mode: "onChange",
   });
@@ -33,15 +36,16 @@ function CreateEmployeeForm({ onCancel }: IProps) {
     })();
   }, []);
 
-  const onSubmit = (data: CreateEmployeeSchemaType) => {
+  const onSubmit = async (data: CreateEmployeeSchemaType) => {
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("surname", data.surname);
     formData.append("department_id", data.department_id.toString());
+    formData.append("avatar", data.avatar);
 
-    if (file) formData.append("avatar", file);
+    await createNewEmpolyee(formData);
 
-    console.log("FormData:", Object.fromEntries(formData.entries()));
+    onCancel();
   };
 
   return (
@@ -65,7 +69,7 @@ function CreateEmployeeForm({ onCancel }: IProps) {
         />
 
         <div className="col-span-2 h-[120px]">
-          <ImageUploader isError={false} onFileUpload={setFile} />
+          <ImageUploader name="avatar" control={control} />
         </div>
 
         <MainSelect
@@ -79,7 +83,7 @@ function CreateEmployeeForm({ onCancel }: IProps) {
 
       <div className="flex justify-end gap-5">
         <MainButton variant="outlined" title="გაუქმება" onClick={onCancel} />
-        <MainButton variant="filled" title="დაამატე თანამშრომელი" type="submit" />
+        <MainButton variant="filled" title="დაამატე თანამშრომელი" type="submit" disabled={isLoading} />
       </div>
     </form>
   );

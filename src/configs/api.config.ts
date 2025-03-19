@@ -23,7 +23,6 @@ const apiConfig = async ({
     const fetchOptions: RequestInit = {
       method,
       headers: {
-        "Content-Type": "application/json",
         Accept: "aplication/json",
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
         ...headers,
@@ -31,7 +30,7 @@ const apiConfig = async ({
     };
 
     if (method !== "GET") {
-      fetchOptions.body = JSON.stringify(body);
+      fetchOptions.body = body instanceof FormData ? body : JSON.stringify(body);
     }
 
     const res = await fetch(process.env.NEXT_PUBLIC_API_URL + url, {
