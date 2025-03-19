@@ -1,9 +1,11 @@
 import Image from "next/image";
-import { useMemo } from "react";
 
 import { Icon } from "@/components";
 import { EmployeeType, StatusType } from "@/types";
 import { formatDateWithDay } from "@/helpers";
+import { getAllStatuses } from "@/services";
+
+import StatusForm from "./StatusForm";
 
 type IProps = {
   id: number;
@@ -12,8 +14,10 @@ type IProps = {
   status: StatusType;
 };
 
-function Details({ status, employee, due_date }: IProps) {
-  const formatedDate = useMemo(() => formatDateWithDay(due_date), [due_date]);
+async function Details({ id, status, employee, due_date }: IProps) {
+  const formatedDate = formatDateWithDay(due_date);
+
+  const statuses = await getAllStatuses();
 
   return (
     <div className="flex flex-col gap-4">
@@ -26,7 +30,8 @@ function Details({ status, employee, due_date }: IProps) {
             <Icon iconName="pie-chart" />
             <span>სტატუსი</span>
           </div>
-          <div className="">Lorem ipsum dolor sit amet consectetur.</div>
+
+          <StatusForm taskId={id} defaultValue={status} options={statuses || []} />
         </div>
 
         <div className="flex items-center py-3">

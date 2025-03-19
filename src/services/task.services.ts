@@ -40,7 +40,16 @@ export const retrieveTaskById = async (taskId: number | string) => {
 
 export const changeStatusForTask = async (taskId: number | string, statusId: number) => {
   try {
-    return apiConfig({ url: `/tasks${taskId}`, method: "PUT", body: { statusId }, tags: [TASKS_TAG] });
+    const res = (await apiConfig({
+      url: `/tasks/${taskId}`,
+      method: "PUT",
+      body: { status_id: statusId },
+      tags: [TASKS_TAG],
+    })) as Promise<TaskType>;
+
+    revalidateTag(TASKS_TAG);
+
+    return res;
   } catch (err) {
     // TODO toast error
     console.error(err);
