@@ -24,7 +24,7 @@ const StatusForm = ({ taskId, defaultValue, options }: IProps) => {
   const selectedStatus = watch("status_id");
 
   useEffect(() => {
-    if (selectedStatus) {
+    if (selectedStatus && selectedStatus !== defaultValue.id) {
       const proceed = window.confirm("დარწმუნებული ხარ რომ სტატუსის შეცვლა გინდა?");
       if (proceed) {
         handleSubmit(async data => {
@@ -34,7 +34,7 @@ const StatusForm = ({ taskId, defaultValue, options }: IProps) => {
         })();
       }
     }
-  }, [selectedStatus, handleSubmit, taskId]);
+  }, [selectedStatus, handleSubmit, taskId, defaultValue.id]);
 
   return (
     <form className="min-w-[250px]">
