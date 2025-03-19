@@ -66,7 +66,7 @@ export default function CustomDatePicker({
 
         <div
           onClick={ev => ev.stopPropagation()}
-          className={`absolute bottom-[120%] left-0 overflow-hidden rounded-lg border border-gray-300 bg-white transition-all duration-1000 ${isPickerOpened ? "h-[368px] opacity-100" : "h-0 opacity-0"}`}
+          className={`absolute bottom-[120%] left-0 overflow-hidden rounded-lg border border-gray-300 bg-white transition-all duration-500 ${isPickerOpened ? "h-[368px] opacity-100" : "h-0 opacity-0"}`}
         >
           <DayPicker
             animate

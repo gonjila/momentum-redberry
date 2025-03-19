@@ -1,10 +1,11 @@
 import { apiConfig } from "@/configs";
+import { EmployeeType } from "@/types";
 
 export const getAllEmployees = async () => {
   try {
     const res = await apiConfig({ url: "/employees" });
 
-    return res;
+    return res as EmployeeType[];
   } catch (err) {
     // TODO toast error
     console.error("get all employee service error", (err as Error).message);

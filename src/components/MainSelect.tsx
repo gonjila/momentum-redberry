@@ -12,6 +12,7 @@ type OptionType = {
   name: string;
   surname?: string;
   avatar?: string;
+  icon?: string;
 };
 
 interface IProps {
@@ -21,6 +22,7 @@ interface IProps {
   isRequired?: boolean;
   placeholder?: string;
   options: OptionType[];
+  isDisabled?: boolean;
   defaultValue?: OptionType;
   onMenuHeaderClick?: () => void;
 }
@@ -32,6 +34,7 @@ const MainSelect = ({
   isRequired,
   placeholder,
   options,
+  isDisabled = false,
   defaultValue,
   onMenuHeaderClick,
 }: IProps) => {
@@ -58,6 +61,7 @@ const MainSelect = ({
         id={name}
         ref={selectRef}
         openMenuOnFocus
+        isDisabled={isDisabled}
         placeholder={placeholder}
         options={options}
         defaultValue={defaultValue}
@@ -92,21 +96,15 @@ export default MainSelect;
 
 // Custom selected item (Single Value)
 const CustomSingleValue = ({ data }: SingleValueProps<OptionType>) => {
+  const name = data.surname ? `${data.name} ${data.surname}` : data.name;
+  const image = data.avatar || data.icon;
+
   return (
-    <div
-      className="flex flex-1 items-center gap-2"
-      style={{ padding: data.avatar ? "8px 12px" : "12px" }}
-    >
-      {data.avatar && (
-        <Image
-          src={data.avatar}
-          alt={data.name}
-          width={32}
-          height={32}
-          className="h-8 w-8 rounded-full"
-        />
+    <div className="flex flex-1 items-center gap-2" style={{ padding: image ? "8px 12px" : "12px" }}>
+      {image && (
+        <Image src={image} alt={data.name} width={32} height={32} className="h-8 w-8 rounded-full" />
       )}
-      <span>{data.name}</span>
+      <span>{name}</span>
     </div>
   );
 };
@@ -114,22 +112,19 @@ const CustomSingleValue = ({ data }: SingleValueProps<OptionType>) => {
 // Custom dropdown option
 const CustomOption = (props: OptionProps<OptionType>) => {
   const { data, innerRef, innerProps, isSelected } = props;
+  const name = data.surname ? `${data.name} ${data.surname}` : data.name;
+  const image = data.avatar || data.icon;
+
   return (
     <div
       ref={innerRef}
       {...innerProps}
       className={`flex cursor-pointer items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 ${isSelected ? "bg-gray-300 text-black" : "text-gray-600"}`}
     >
-      {data.avatar && (
-        <Image
-          src={data.avatar}
-          alt={data.name}
-          width={26}
-          height={26}
-          className="h-6 w-6 rounded-full"
-        />
+      {image && (
+        <Image src={image} alt={data.name} width={26} height={26} className="h-6 w-6 rounded-full" />
       )}
-      <span>{data.name}</span>
+      <span>{name}</span>
     </div>
   );
 };

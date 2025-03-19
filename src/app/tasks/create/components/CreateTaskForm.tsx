@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
 
 import { MainButton, MainInput, MainSelect } from "@/components";
 import {
@@ -11,46 +12,28 @@ import {
   titleValidations,
 } from "@/validations";
 import { formatDateForTaskApi } from "@/helpers";
+import { DepartmentType, EmployeeType, PriorityType, StatusType } from "@/types";
 
-import { CustomDataPicker } from ".";
+import CustomDataPicker from "./CustomDataPicker";
 
-// TODO delete
-const selectOptions = [
-  {
-    id: 1,
-    value: "user1",
-    name: "თამარ კაკაბაძე 1",
-    avatar:
-      "https://momentum.redberryinternship.ge/storage/employee-avatars/iWqIr6QWRo6V1ofnenkctiyJRPKh4ar0LmxF8FYQ.png",
-  },
-  {
-    id: 2,
-    value: "user2",
-    name: "თამარ კაკაბაძე 2",
-    // avatar:
-    //   "https://momentum.redberryinternship.ge/storage/employee-avatars/iWqIr6QWRo6V1ofnenkctiyJRPKh4ar0LmxF8FYQ.png",
-  },
-  {
-    id: 3,
-    value: "user3",
-    name: "თამარ კაკაბაძე 3",
-    // avatar:
-    //   "https://momentum.redberryinternship.ge/storage/employee-avatars/iWqIr6QWRo6V1ofnenkctiyJRPKh4ar0LmxF8FYQ.png",
-  },
-  {
-    id: 4,
-    value: "user4",
-    name: "თამარ კაკაბაძე 4",
-    avatar:
-      "https://momentum.redberryinternship.ge/storage/employee-avatars/iWqIr6QWRo6V1ofnenkctiyJRPKh4ar0LmxF8FYQ.png",
-  },
-];
+interface IProps {
+  employees: EmployeeType[];
+  priorities: PriorityType[];
+  statuses: StatusType[];
+  departments: DepartmentType[];
+}
 
-function CreateTaskForm() {
-  const { control, handleSubmit } = useForm<CreateTaskSchemaType>({
+function CreateTaskForm({ employees, priorities, statuses, departments }: IProps) {
+  const { control, handleSubmit, watch } = useForm<CreateTaskSchemaType>({
     resolver: zodResolver(createTaskSchema),
     mode: "onChange",
   });
+
+  const selectedDepartment = watch("department_id");
+
+  const filteredEmployees = useMemo(() => {
+    return employees.filter(emp => emp.department.id === selectedDepartment);
+  }, [selectedDepartment, employees]);
 
   const onSubmit = (data: CreateTaskSchemaType) => {
     const preparedData = { ...data, due_date: formatDateForTaskApi(data.due_date.toISOString()) };
@@ -73,13 +56,14 @@ function CreateTaskForm() {
           validations={titleValidations}
         />
 
-        {/* <MainSelect
-          name="department"
+        <MainSelect
+          name="department_id"
+          control={control}
           label="დეპარტამენტი"
           isRequired
-          options={selectOptions}
-          defaultValue={selectOptions[0]}
-        /> */}
+          placeholder="აირჩიე..."
+          options={departments}
+        />
 
         <MainInput
           name="description"
@@ -95,9 +79,11 @@ function CreateTaskForm() {
           control={control}
           label="პასუხისმგებელი თანამშრომელი"
           isRequired
-          options={selectOptions}
-          defaultValue={selectOptions[0]}
-          onMenuHeaderClick={() => {}}
+          isDisabled={!selectedDepartment}
+          placeholder="აირჩიე..."
+          options={filteredEmployees}
+          defaultValue={filteredEmployees[0]}
+          onMenuHeaderClick={() => {}} //TODO open modal for create employee
         />
 
         <div className="flex gap-8">
@@ -106,16 +92,16 @@ function CreateTaskForm() {
             control={control}
             label="პრიორიტეტი"
             isRequired
-            options={selectOptions}
-            defaultValue={selectOptions[1]}
+            options={priorities}
+            defaultValue={priorities[1]}
           />
           <MainSelect
             name="status_id"
             control={control}
             label="სტატუსი"
             isRequired
-            options={selectOptions}
-            defaultValue={selectOptions[2]}
+            options={statuses}
+            defaultValue={statuses[0]}
           />
         </div>
 
