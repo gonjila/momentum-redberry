@@ -12,13 +12,18 @@ import FilterDropdownContent from "./FilterDropdownContent";
 function TasksFilter() {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { fetchedFiltersData, selectedFilters, fetchFilterData, resetFilterData, deleteSelectedFilter } =
-    useFiltersStore();
+  const {
+    fetchedFiltersData,
+    selectedFilters,
+    fetchAllFilterData,
+    resetFilterData,
+    deleteSelectedFilter,
+  } = useFiltersStore();
 
   const [chosenFilterType, setChosenFilterType] = useState<FilterDataKeysType | null>(null); // for opening different dropdown content
 
   useEffect(() => {
-    fetchFilterData();
+    fetchAllFilterData();
 
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -28,7 +33,7 @@ function TasksFilter() {
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [fetchFilterData]);
+  }, [fetchAllFilterData]);
 
   const modifiedSelectedFilters = Object.values(selectedFilters).flat();
 

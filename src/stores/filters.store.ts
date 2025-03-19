@@ -30,7 +30,8 @@ const initialValue: FilterDataType = {
 interface IFiltersStore {
   fetchedFiltersData: FilterDataType;
   selectedFilters: SelectableFilterDataType;
-  fetchFilterData: () => void;
+  fetchAllFilterData: () => void;
+  addNewEmployee: (newEmployee: EmployeeType) => void;
   changeData: (
     changedValues: PosiblyActivatedFilterItem[],
     chosenFilterType: FilterDataKeysType,
@@ -45,7 +46,7 @@ const useFiltersStore = create<IFiltersStore>((set, get) => ({
 
   selectedFilters: initialValue,
 
-  fetchFilterData: () => {
+  fetchAllFilterData: () => {
     Promise.all([getAllDepartments(), getAllPriorities(), getAllEmployees()]).then(
       ([departments, priorities, employees]) => {
         set({
@@ -58,6 +59,14 @@ const useFiltersStore = create<IFiltersStore>((set, get) => ({
       },
     );
   },
+
+  addNewEmployee: async newEmployee =>
+    set(state => ({
+      fetchedFiltersData: {
+        ...state.fetchedFiltersData,
+        employees: [...state.fetchedFiltersData.employees, newEmployee],
+      },
+    })),
 
   changeData: (changedValues, chosenFilterType, filterdSelectedValues) =>
     set(state => {
@@ -82,7 +91,7 @@ const useFiltersStore = create<IFiltersStore>((set, get) => ({
     })),
 
   resetFilterData: () => {
-    get().fetchFilterData();
+    get().fetchAllFilterData();
     set({ selectedFilters: initialValue });
   },
 }));

@@ -3,10 +3,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 
 import { createEmployeeSchema, CreateEmployeeSchemaType, nameValidations } from "@/validations";
 import { DepartmentType } from "@/types";
 import { createNewEmpolyee, getAllDepartments } from "@/services";
+import { useFiltersStore } from "@/stores";
 
 import ImageUploader from "./ImageUploader";
 
@@ -17,6 +19,10 @@ interface IProps {
 }
 
 function CreateEmployeeForm({ onCancel }: IProps) {
+  const pathname = usePathname();
+
+  const { addNewEmployee } = useFiltersStore();
+
   const [departments, setDepartments] = useState<DepartmentType[]>([]);
 
   const {
@@ -43,9 +49,13 @@ function CreateEmployeeForm({ onCancel }: IProps) {
     formData.append("department_id", data.department_id.toString());
     formData.append("avatar", data.avatar);
 
-    await createNewEmpolyee(formData);
+    const newEmployee = await createNewEmpolyee(formData);
 
-    onCancel();
+    if (newEmployee) {
+      if (pathname === "/") addNewEmployee(newEmployee);
+
+      onCancel();
+    }
   };
 
   return (
