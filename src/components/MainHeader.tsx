@@ -4,10 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { useModalStore } from "@/stores";
+
 import MainButton from "./MainButton";
 
 function MainHeader() {
   const router = useRouter();
+  const { openModal } = useModalStore();
 
   return (
     <header className="mb-10 flex items-center justify-between py-7">
@@ -16,7 +19,7 @@ function MainHeader() {
       </Link>
 
       <div className="flex items-center gap-10">
-        <MainButton variant="outlined" title="თანამშრომლის შექმნა" onClick={() => {}} />
+        <MainButton variant="outlined" title="თანამშრომლის შექმნა" onClick={openModal} />
         <MainButton
           variant="filled"
           title="შექმენი ახალი დავალება"

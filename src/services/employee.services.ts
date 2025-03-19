@@ -14,9 +14,14 @@ export const getAllEmployees = async () => {
 
 export const createNewEmpolyee = async (data: object) => {
   try {
-    const res = await apiConfig({ url: "/employees", method: "POST", body: data });
+    const res = await apiConfig({
+      url: "/employees",
+      method: "POST",
+      body: data,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
 
-    return res;
+    return res as EmployeeType;
   } catch (err) {
     // TODO toast error
     console.error("create new employee service error", (err as Error).message);

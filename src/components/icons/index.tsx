@@ -7,6 +7,7 @@ import Comment from "./Comment";
 import LeftCurvedArrow from "./LeftCurvedArrow";
 import Person from "./Person";
 import PieChart from "./PieChart";
+import Trash from "./Trash";
 
 export type IconNameType =
   | "add"
@@ -17,7 +18,8 @@ export type IconNameType =
   | "comment"
   | "left-curved-arrow"
   | "person"
-  | "pie-chart";
+  | "pie-chart"
+  | "trash";
 
 interface IconProps {
   iconName: IconNameType;
@@ -56,6 +58,9 @@ const Icon = ({ iconName, width, height, color }: IconProps) => {
       break;
     case "pie-chart":
       IconComponet = PieChart;
+      break;
+    case "trash":
+      IconComponet = Trash;
       break;
     default: {
       return null;

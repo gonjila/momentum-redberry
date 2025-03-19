@@ -16,6 +16,7 @@ import {
 import { formatDateForTaskApi } from "@/helpers";
 import { DepartmentType, EmployeeType, PriorityType, StatusType } from "@/types";
 import { createNewTask } from "@/services";
+import { useModalStore } from "@/stores";
 
 import CustomDataPicker from "./CustomDataPicker";
 
@@ -27,6 +28,8 @@ interface IProps {
 }
 
 function CreateTaskForm({ employees, priorities, statuses, departments }: IProps) {
+  const { openModal } = useModalStore();
+
   const { control, handleSubmit, watch } = useForm<CreateTaskSchemaType>({
     resolver: zodResolver(createTaskSchema),
     mode: "onChange",
@@ -87,7 +90,7 @@ function CreateTaskForm({ employees, priorities, statuses, departments }: IProps
           placeholder="აირჩიე..."
           options={filteredEmployees}
           defaultValue={filteredEmployees[0]}
-          onMenuHeaderClick={() => {}} //TODO open modal for create employee
+          onMenuHeaderClick={openModal}
         />
 
         <div className="flex gap-8">
