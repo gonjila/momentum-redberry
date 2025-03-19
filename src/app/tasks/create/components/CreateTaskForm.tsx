@@ -3,6 +3,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
+import { addDays } from "date-fns";
+import { redirect } from "next/navigation";
 
 import { MainButton, MainInput, MainSelect } from "@/components";
 import {
@@ -13,6 +15,7 @@ import {
 } from "@/validations";
 import { formatDateForTaskApi } from "@/helpers";
 import { DepartmentType, EmployeeType, PriorityType, StatusType } from "@/types";
+import { createNewTask } from "@/services";
 
 import CustomDataPicker from "./CustomDataPicker";
 
@@ -35,11 +38,12 @@ function CreateTaskForm({ employees, priorities, statuses, departments }: IProps
     return employees.filter(emp => emp.department.id === selectedDepartment);
   }, [selectedDepartment, employees]);
 
-  const onSubmit = (data: CreateTaskSchemaType) => {
+  const onSubmit = async (data: CreateTaskSchemaType) => {
     const preparedData = { ...data, due_date: formatDateForTaskApi(data.due_date.toISOString()) };
 
-    // eslint-disable-next-line no-console
-    console.log("Form submitted", preparedData);
+    const res = await createNewTask(preparedData);
+
+    if (res) redirect("/");
   };
 
   return (
@@ -105,7 +109,14 @@ function CreateTaskForm({ employees, priorities, statuses, departments }: IProps
           />
         </div>
 
-        <CustomDataPicker name="due_date" control={control} isRequired label="დედლაინი" />
+        <CustomDataPicker
+          name="due_date"
+          control={control}
+          isRequired
+          label="დედლაინი"
+          defaultValue={addDays(new Date(), 1)}
+          disabled={{ before: new Date() }}
+        />
       </div>
 
       <div className="flex justify-end">

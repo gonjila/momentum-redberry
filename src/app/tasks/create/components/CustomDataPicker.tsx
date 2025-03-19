@@ -1,5 +1,5 @@
 "use client";
-import { DayPicker } from "react-day-picker";
+import { DayPicker, Matcher } from "react-day-picker";
 import "react-day-picker/style.css";
 import { useController, Control } from "react-hook-form";
 import { useEffect, useRef, useState } from "react";
@@ -13,6 +13,8 @@ type Props = {
   label?: string;
   placeholder?: string;
   isRequired?: boolean;
+  disabled?: Matcher;
+  defaultValue?: Date;
 };
 
 export default function CustomDatePicker({
@@ -21,6 +23,8 @@ export default function CustomDatePicker({
   label,
   placeholder = "DD.MM.YYYY",
   isRequired,
+  disabled,
+  defaultValue,
 }: Props) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +33,7 @@ export default function CustomDatePicker({
   const {
     field: { value, onChange },
     fieldState: { error },
-  } = useController({ name, control, defaultValue: "" });
+  } = useController({ name, control, defaultValue: defaultValue || "" });
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -76,6 +80,7 @@ export default function CustomDatePicker({
               onChange(val);
               setIsPickerOpened(false);
             }}
+            disabled={disabled}
             className={`text-md w-full px-6 py-3 outline-0`}
           />
         </div>

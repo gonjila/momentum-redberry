@@ -27,7 +27,7 @@ function MainField({
   const {
     field: { value, onChange, ref },
     fieldState: { error, isDirty, invalid },
-  } = useController({ name, control, defaultValue: "" });
+  } = useController({ name, control });
 
   return (
     <div className="flex flex-col gap-1.5">
@@ -37,31 +37,33 @@ function MainField({
         </label>
       )}
 
-      {type === "textarea" ? (
-        <textarea
-          ref={ref}
-          id={name}
-          placeholder={placeholder}
-          rows={rows || 4}
-          value={value}
-          onChange={onChange}
-          className={`text-md resize-none rounded-md border bg-white p-3 outline-0 transition-all ${
-            error ? "border-red-500" : "border-[#DEE2E6]"
-          }`}
-        />
-      ) : (
-        <input
-          ref={ref}
-          id={name}
-          type={type}
-          placeholder={placeholder}
-          value={value || ""}
-          onChange={onChange}
-          className={`text-md rounded-md border bg-white p-3 outline-0 transition-all ${
-            error ? "border-red-500" : "border-[#DEE2E6]"
-          }`}
-        />
-      )}
+      <div
+        className={`rounded-md border bg-white transition-all ${
+          error ? "border-red-500" : "border-[#DEE2E6]"
+        }`}
+      >
+        {type === "textarea" ? (
+          <textarea
+            ref={ref}
+            id={name}
+            placeholder={placeholder}
+            rows={rows || 4}
+            value={value}
+            onChange={onChange}
+            className="text-md w-full resize-none p-3 outline-0"
+          />
+        ) : (
+          <input
+            ref={ref}
+            id={name}
+            type={type}
+            placeholder={placeholder}
+            value={value || ""}
+            onChange={onChange}
+            className="`text-md w-full p-3 outline-0"
+          />
+        )}
+      </div>
 
       {validations && (
         <div className="flex flex-col gap-[2px] text-xs">

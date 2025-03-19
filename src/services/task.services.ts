@@ -18,14 +18,19 @@ export const getAllTasks = async () => {
 
 export const createNewTask = async (data: object) => {
   try {
-    const res = apiConfig({ url: "/tasks", method: "POST", body: data, tags: [TASKS_TAG] });
+    const res = (await apiConfig({
+      url: "/tasks",
+      method: "POST",
+      body: data,
+      tags: [TASKS_TAG],
+    })) as TaskType;
 
     revalidateTag(TASKS_TAG);
 
     return res;
   } catch (err) {
     // TODO toast error
-    console.error(err);
+    console.error({ err });
   }
 };
 
