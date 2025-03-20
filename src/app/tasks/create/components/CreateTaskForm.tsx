@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { addDays } from "date-fns";
 import { redirect } from "next/navigation";
 
@@ -30,7 +30,7 @@ interface IProps {
 function CreateTaskForm({ employees, priorities, statuses, departments }: IProps) {
   const { openModal } = useModalStore();
 
-  const { control, handleSubmit, watch } = useForm<CreateTaskSchemaType>({
+  const { control, handleSubmit, watch, setValue } = useForm<CreateTaskSchemaType>({
     resolver: zodResolver(createTaskSchema),
     mode: "onChange",
   });
@@ -40,6 +40,10 @@ function CreateTaskForm({ employees, priorities, statuses, departments }: IProps
   const filteredEmployees = useMemo(() => {
     return employees.filter(emp => emp.department.id === selectedDepartment);
   }, [selectedDepartment, employees]);
+
+  useEffect(() => {
+    setValue("employee_id", null);
+  }, [selectedDepartment, setValue]);
 
   const onSubmit = async (data: CreateTaskSchemaType) => {
     const preparedData = { ...data, due_date: formatDateForTaskApi(data.due_date.toISOString()) };

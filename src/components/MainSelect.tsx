@@ -77,7 +77,7 @@ const MainSelect = ({
         defaultValue={defaultValue}
         getOptionLabel={option => option.name}
         getOptionValue={option => option.id.toString()}
-        value={options.find(option => option.id === value)}
+        value={options.find(option => option.id === value) || null}
         onChange={newValue => onChange((newValue as OptionType)?.id)}
         isSearchable={false}
         menuPlacement={menuPlacement}
