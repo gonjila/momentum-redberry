@@ -1,7 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import Select, { components, SingleValueProps, OptionProps, MenuListProps } from "react-select";
+import Select, {
+  components,
+  SingleValueProps,
+  OptionProps,
+  MenuListProps,
+  MenuPlacement,
+} from "react-select";
 import { useController, Control } from "react-hook-form";
 import { useRef } from "react";
 
@@ -25,6 +31,7 @@ interface IProps {
   options: OptionType[];
   isDisabled?: boolean;
   defaultValue?: OptionType;
+  menuPlacement?: MenuPlacement;
   onMenuHeaderClick?: () => void;
 }
 
@@ -37,6 +44,7 @@ const MainSelect = ({
   options,
   isDisabled = false,
   defaultValue,
+  menuPlacement = "auto",
   onMenuHeaderClick,
 }: IProps) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -72,6 +80,7 @@ const MainSelect = ({
         value={options.find(option => option.id === value)}
         onChange={newValue => onChange((newValue as OptionType)?.id)}
         isSearchable={false}
+        menuPlacement={menuPlacement}
         components={{
           SingleValue: CustomSingleValue,
           Option: CustomOption,

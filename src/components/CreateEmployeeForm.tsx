@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { createEmployeeSchema, CreateEmployeeSchemaType, nameValidations } from "@/validations";
 import { DepartmentType } from "@/types";
@@ -88,6 +88,7 @@ function CreateEmployeeForm({ onCancel }: IProps) {
           label="სახელი"
           isRequired
           options={departments}
+          menuPlacement="top"
         />
       </div>
 
