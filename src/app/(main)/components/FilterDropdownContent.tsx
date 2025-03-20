@@ -40,9 +40,9 @@ function FilterContent({ data, chosenFilterType, onClose }: IProps) {
   };
 
   return (
-    <div className="border-main absolute top-[120%] flex w-full flex-col gap-6 rounded-xl border bg-white px-8 pt-10 pb-5">
+    <div className="border-main absolute top-[120%] max-h-[500px] w-full overflow-auto rounded-xl border bg-white px-8 pt-10 pb-5">
       {data.length > 0 ? (
-        <>
+        <div className="relative flex flex-col gap-6">
           <div className="flex flex-col gap-5">
             {chosenFilterData.map(item => (
               <FilterContentItem
@@ -58,7 +58,7 @@ function FilterContent({ data, chosenFilterType, onClose }: IProps) {
               />
             ))}
           </div>
-          <div className="flex justify-end">
+          <div className="sticky bottom-0 left-0 flex justify-end">
             <MainButton
               variant="rounded"
               title="არჩევა"
@@ -68,7 +68,7 @@ function FilterContent({ data, chosenFilterType, onClose }: IProps) {
               }}
             />
           </div>
-        </>
+        </div>
       ) : (
         <div className="text-center">მონაცემები არ არის</div>
       )}
