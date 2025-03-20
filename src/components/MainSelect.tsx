@@ -90,7 +90,7 @@ const MainSelect = ({
           control: (styles, state) => ({
             ...styles,
 
-            borderColor: error ? "red" : state.menuIsOpen ? "#cccfd3" : "#dee2e6",
+            borderColor: error || value < 0 ? "red" : state.menuIsOpen ? "#cccfd3" : "#dee2e6",
             boxShadow: "none",
             "&:hover": {},
           }),

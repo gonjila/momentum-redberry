@@ -27,12 +27,17 @@ interface IProps {
   departments: DepartmentType[];
 }
 
+const STORAGE_KEY = "create_task_form";
+
 function CreateTaskForm({ employees, priorities, statuses, departments }: IProps) {
   const { openModal } = useModalStore();
+
+  const storedData = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
 
   const { control, handleSubmit, watch, setValue } = useForm<CreateTaskSchemaType>({
     resolver: zodResolver(createTaskSchema),
     mode: "onChange",
+    defaultValues: storedData ? JSON.parse(storedData) : {},
   });
 
   const selectedDepartment = watch("department_id");
@@ -41,16 +46,40 @@ function CreateTaskForm({ employees, priorities, statuses, departments }: IProps
     return employees.filter(emp => emp.department.id === selectedDepartment);
   }, [selectedDepartment, employees]);
 
+  // department_id-ის შეცვლის შემდეგ რომ გასუფთავდეს employee_id
   useEffect(() => {
-    setValue("employee_id", null);
-  }, [selectedDepartment, setValue]);
+    if (selectedDepartment && !storedData) {
+      setValue("employee_id", 0);
+    }
+  }, [selectedDepartment, setValue, storedData]);
+
+  // მონაცემების ცვლილების შემდეგ რომ შეინახოს ინფორმაცია localstorageში
+  useEffect(() => {
+    const subscription = watch(formData => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [watch]);
+
+  // გვერდის შეცვლისას რომ გასუფთავდეს შენახული ველიუები
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem(STORAGE_KEY);
+    };
+  }, []);
 
   const onSubmit = async (data: CreateTaskSchemaType) => {
     const preparedData = { ...data, due_date: formatDateForTaskApi(data.due_date.toISOString()) };
 
     const res = await createNewTask(preparedData);
 
-    if (res) redirect("/");
+    if (res) {
+      localStorage.removeItem(STORAGE_KEY);
+      redirect(`/tasks/${res.id}`);
+    }
   };
 
   return (
